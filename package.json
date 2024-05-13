@@ -1,0 +1,20 @@
+{
+  "name": "nodejs2022",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon src/bin/www.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "config": "^3.3.9",
+    "dotenv": "^16.4.5",
+    "express": "^4.18.1",
+    "mongoose": "^8.0.3",
+    "nodemon": "^2.0.19"
+  }
+}
