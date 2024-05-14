@@ -1,11 +1,11 @@
 const express = require("express");
 const router = express.Router();
-const truyenRouters = require("./truyen");
-const chapterRouters = require("./chapter");
-const userRouters = require("./user");
+const protectRouter = require("./protect");
+const publicRouter = require("./public");
 
-router.use("/truyen", truyenRouters);
-router.use("/chapter", chapterRouters);
-router.use("/user", userRouters);
+const authenticateToken = require("../apps/middlewares/Auth");
+
+router.use("/auth", authenticateToken, protectRouter);
+router.use("/public", publicRouter);
 
 module.exports = router;

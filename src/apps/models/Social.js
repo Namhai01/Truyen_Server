@@ -1,23 +1,26 @@
 const mongoose = require("../../common/db");
 
-const userSchema = new mongoose.Schema(
+const socialSchema = new mongoose.Schema(
   {
-    username: {
-      type: String,
-      required: true,
-    },
-    password: {
+    full_name: {
       type: String,
       required: true,
     },
     email: {
       type: String,
-      unique: true,
       required: true,
     },
     avatar: {
       type: String,
       default: "/static/images/uploads/avatars/user.jpg",
+    },
+    facebook_provider: {
+      type: Number,
+      default: 0,
+    },
+    google_provider: {
+      type: Number,
+      default: 0,
     },
     follower: [
       {
@@ -38,10 +41,10 @@ const userSchema = new mongoose.Schema(
   }
 );
 
-const userModel = (module.exports = mongoose.model(
-  "Users",
-  userSchema,
-  "users"
+const socialModel = (module.exports = mongoose.model(
+  "socials",
+  socialSchema,
+  "Socials"
 ));
 
-module.exports = userModel;
+module.exports = socialModel;
