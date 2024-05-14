@@ -1,5 +1,6 @@
 const express = require("express");
 const config = require("config");
+const cors = require("cors");
 const GoogleLogin = require("../apps/controllers/social/GG_Controller");
 const FacebookLogin = require("../apps/controllers/social/FB_Controller");
 const session = require("express-session");
@@ -8,6 +9,7 @@ const app = express();
 //Setting
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(cors());
 app.use("/static", express.static(config.app.STATIC_PATH));
 
 //Session
