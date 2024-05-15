@@ -29,7 +29,12 @@ const GoogleLogin = () => {
             if (!user.google_provider) {
               await socialModel.findOneAndUpdate(
                 { email: customerinfo.email },
-                { $set: { google_provider: customerinfo.google_provider } }
+                {
+                  $set: {
+                    google_provider: customerinfo.google_provider,
+                    avatar: customerinfo.avatar,
+                  },
+                }
               );
             }
           } else {

@@ -30,7 +30,12 @@ const FacebookLogin = () => {
             if (!user.facebook_provider) {
               await socialModel.findOneAndUpdate(
                 { email: customerinfo.email },
-                { $set: { facebook_provider: customerinfo.facebook_provider } }
+                {
+                  $set: {
+                    facebook_provider: customerinfo.facebook_provider,
+                    avatar: customerinfo.avatar,
+                  },
+                }
               );
             }
           } else {
