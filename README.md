@@ -8,3 +8,7 @@
   git clone https://github.com/Namhai01/Truyen_Server.git
 - Step 2: npm install
 - Step 3: npm run dev :rocket:
+
+## Contact
+
+- Email:
