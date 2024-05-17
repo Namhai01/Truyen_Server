@@ -24,6 +24,7 @@ app.use(
 
 //Routers
 app.use("/api/v1", require("../routers/web"));
+
 GoogleLogin();
 FacebookLogin();
 

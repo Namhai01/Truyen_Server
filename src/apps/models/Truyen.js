@@ -7,13 +7,17 @@ const truyenSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    thumbnail: {
+      type: String,
+      required: true,
+    },
     author: {
       type: String,
       required: true,
     },
     rate: {
       type: Number,
-      required: true,
+      default: 0,
     },
     view: {
       type: Number,

@@ -38,6 +38,7 @@ module.exports.logIn = async (req, res) => {
     });
   } catch (error) {
     console.log(error.message);
+    return res.status(500).json({ error: "Đã xảy ra lỗi!" });
   }
 };
 
@@ -71,6 +72,14 @@ module.exports.register = async (req, res) => {
     res.status(201).json({ status: "success", message: "Đăng kí thành công!" });
   } catch (error) {
     console.log(error.message);
-    return res.status(500).json({ error: "Đã xảy ra lỗi khi tạo người dùng." });
+    return res.status(500).json({ error: "Đã xảy ra lỗi!" });
+  }
+};
+
+module.exports.logOut = async (req, res) => {
+  try {
+  } catch (error) {
+    console.log(error.message);
+    return res.status(500).json({ error: "Đã xảy ra lỗi!" });
   }
 };
