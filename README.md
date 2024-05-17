@@ -1,0 +1,10 @@
+# Project name : Truyen_Server
+
+- API for front-end truyen.
+
+## Installation
+
+- Step 1: CLone the project
+  git clone https://github.com/Namhai01/Truyen_Server.git
+- Step 2: npm install
+- Step 3: npm run dev
