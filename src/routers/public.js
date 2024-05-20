@@ -6,6 +6,7 @@ const passport = require("passport");
 //AUTH
 router.post("/login", authController.logIn);
 router.post("/register", authController.register);
+router.post("/refreshAccessToken", authController.refreshAccessToken);
 
 //AUTH GG
 router.get(

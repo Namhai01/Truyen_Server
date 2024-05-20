@@ -4,12 +4,18 @@ const cors = require("cors");
 const GoogleLogin = require("../apps/controllers/social/GG_Controller");
 const FacebookLogin = require("../apps/controllers/social/FB_Controller");
 const session = require("express-session");
+const cookiesParser = require("cookie-parser");
+require("../libs/redis");
 const app = express();
 
 //Setting
+const cosrOrigin = {
+  origin: "*",
+};
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(cors());
+app.use(cors(cosrOrigin));
+app.use(cookiesParser());
 app.use("/static", express.static(config.app.STATIC_PATH));
 
 //Session

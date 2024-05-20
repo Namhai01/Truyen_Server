@@ -9,3 +9,11 @@ module.exports.userInfo = async (req, res) => {
     console.log(error.message);
   }
 };
+
+module.exports.refreshToken = async (req, res) => {
+  try {
+  } catch (error) {
+    console.log(error.message);
+    return res.status(500).json({ error: "Đã xảy ra lỗi!" });
+  }
+};
