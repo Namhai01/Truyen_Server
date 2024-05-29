@@ -20,4 +20,5 @@ module.exports = {
     FACEBOOK_APP_SECRET: process.env.FACEBOOK_APP_SECRET,
     callbackURL: "http://localhost:3001/api/v1/public/facebook/redirect",
   },
+  NODE_ENV: "production",
 };
