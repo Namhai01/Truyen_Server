@@ -6,6 +6,7 @@ const FacebookLogin = require("../apps/controllers/social/FB_Controller");
 const session = require("express-session");
 const cookiesParser = require("cookie-parser");
 const bodyParser = require("body-parser");
+const redisClient = require("redis").createClient();
 require("../libs/redis");
 const app = express();
 
@@ -24,10 +25,10 @@ app.use("/static", express.static(config.app.STATIC_PATH));
 //Session
 app.use(
   session({
+    store: new RedisStore({ client: redisClient }),
     secret: config.app.session_key,
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: config.app.session_secure },
   })
 );
 
