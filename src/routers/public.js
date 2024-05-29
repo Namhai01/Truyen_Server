@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const authController = require("../apps/controllers/Auth");
+const truyenController = require("../apps/controllers/Truyen");
 const passport = require("passport");
 
 //AUTH
@@ -49,5 +50,9 @@ router.get(
     });
   }
 );
+
+//TRUYEN
+router.get("/truyen", truyenController.getTruyen);
+router.get("/truyen/:id", truyenController.getTruyenId);
 
 module.exports = router;

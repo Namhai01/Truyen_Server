@@ -9,7 +9,7 @@ const truyenSchema = new mongoose.Schema(
     },
     thumbnail: {
       type: String,
-      required: true,
+      // required: true,
     },
     author: {
       type: String,
@@ -23,6 +23,13 @@ const truyenSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
+    categories: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref: "Categories",
+      },
+    ],
     // status: {
     //   type: String,
     // },
@@ -30,10 +37,12 @@ const truyenSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    chapter: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "chapters",
-    },
+    chapters: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Chapters",
+      },
+    ],
   },
   {
     timestamps: true,

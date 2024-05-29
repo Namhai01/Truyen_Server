@@ -5,6 +5,7 @@ const GoogleLogin = require("../apps/controllers/social/GG_Controller");
 const FacebookLogin = require("../apps/controllers/social/FB_Controller");
 const session = require("express-session");
 const cookiesParser = require("cookie-parser");
+const bodyParser = require("body-parser");
 require("../libs/redis");
 const app = express();
 
@@ -14,6 +15,8 @@ const cosrOrigin = {
 };
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors(cosrOrigin));
 app.use(cookiesParser());
 app.use("/static", express.static(config.app.STATIC_PATH));
