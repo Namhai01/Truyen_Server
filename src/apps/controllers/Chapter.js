@@ -18,9 +18,9 @@ module.exports.add = async (req, res) => {
         message: "Không tìm thấy truyện này !",
       });
     const lastChapter = await chapterModel
-      .findOne({ _id: { $in: truyen.chapters } })
+      .find({ _id: { $in: truyen.chapters } })
       .sort({ chapter_num: -1 });
-    const nextChapterNum = lastChapter ? lastChapter.chapter_num + 1 : 1;
+    const nextChapterNum = lastChapter ? lastChapter[0].chapter_num + 1 : 1;
     const newChapter = await chapterModel.create({
       chapter_num: nextChapterNum,
       body: body.body,
