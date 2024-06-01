@@ -1,16 +1,19 @@
-module.exports = (page, limit, totalRow) => {
-  const totalPage = Math.ceil(totalRow / limit);
-  let pages = [];
-  const delta = 2;
-  const left = page - delta;
-  const right = page + delta;
+const pagination = async (model, query, page, limit) => {
+  const total = await model.find(query).countDocuments();
+  const totalPages = Math.ceil(total / limit);
+  const next = page + 1;
+  const prev = page - 1;
+  const hasNext = page + 1 <= totalPages ? true : false;
+  const hasPrev = page - 1 > 0 ? true : false;
 
-  for (let i = 1; i <= totalPage; i++) {
-    if (i == 1 || i == totalPage || ((i == page) | (i >= left) && i <= right)) {
-      pages.push(i);
-    } else if (i == left - 1 || i == right + 1) {
-      pages.push("...");
-    }
-  }
-  return pages;
+  return {
+    total,
+    totalPages,
+    currentPage: page,
+    next,
+    prev,
+    hasNext,
+    hasPrev,
+  };
 };
+module.exports = pagination;

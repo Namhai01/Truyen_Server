@@ -11,12 +11,6 @@ module.exports.truyenUpload = async (req, res) => {
         message: "Yêu cầu không hợp lệ, không có dữ liệu.",
       });
     }
-    const file = req.file;
-    if (!file) {
-      return res
-        .status(500)
-        .json({ status: "error", message: "Please upload a file!" });
-    }
     const { body } = req;
     if (!body.title || !body.author || !body.description || !body.categories) {
       return res.status(400).json({
@@ -24,15 +18,20 @@ module.exports.truyenUpload = async (req, res) => {
         message: "Yêu cầu không hợp lệ, thiếu thông tin của truyện.",
       });
     }
+    const file = req.file;
     const name = slug(body.title, "_");
-    const thumbnail = await uploadImage(file, "truyen", name);
-    await truyenModel({
+    let truyenData = {
       title: body.title,
-      thumbnail: thumbnail,
       author: body.author,
       categories: body.categories,
       description: body.description,
-    }).save();
+    };
+    if (file) {
+      const thumbnail = await uploadImage(file, "truyen", name);
+      truyenData.thumbnail = thumbnail;
+    }
+
+    await truyenModel(truyenData).save();
     res.status(201).json({
       status: "success",
       message: "Thêm truyện thành công!",
@@ -44,9 +43,9 @@ module.exports.truyenUpload = async (req, res) => {
 };
 module.exports.getTruyen = async (req, res) => {
   try {
+    const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
-    const currentPage = parseInt(req.query.page) || 1;
-    const skip = (currentPage - 1) * limit;
+    const skip = page * limit - limit;
     const query = {};
     const sortBy =
       req.query.filter == "view" ? { view: -1, rate: -1 } : { _id: -1 };
@@ -54,9 +53,6 @@ module.exports.getTruyen = async (req, res) => {
     if (keywords && keywords.trim() !== "") {
       query.title = { $regex: new RegExp(keywords, "i") };
     }
-    const totalRow = await truyenModel.find(query).countDocuments();
-    const pages = pagination(currentPage, limit, totalRow);
-    const totalPages = Math.ceil(totalRow / limit);
     const truyen = await truyenModel
       .find(query)
       .populate({ path: "categories" })
@@ -72,8 +68,7 @@ module.exports.getTruyen = async (req, res) => {
           limit,
         },
         pages: {
-          page: pages,
-          totalPages: totalPages,
+          page: await pagination(truyenModel, query, page, limit),
         },
       },
     });
@@ -100,6 +95,13 @@ module.exports.getTruyenId = async (req, res) => {
         truyen,
       },
     });
+  } catch (error) {
+    console.log(error.message);
+    return res.status(500).json({ error: "Đã xảy ra lỗi!" });
+  }
+};
+module.exports.filterCategories = async (req, res) => {
+  try {
   } catch (error) {
     console.log(error.message);
     return res.status(500).json({ error: "Đã xảy ra lỗi!" });

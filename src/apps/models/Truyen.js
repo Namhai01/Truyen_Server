@@ -9,7 +9,7 @@ const truyenSchema = new mongoose.Schema(
     },
     thumbnail: {
       type: String,
-      // required: true,
+      default: "/static/images/uploads/truyen/image_null.jpg",
     },
     author: {
       type: String,
