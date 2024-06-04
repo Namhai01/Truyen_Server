@@ -25,12 +25,11 @@ function createRefreshToken(payload, maxAge) {
         console.log(err.message);
         reject(createError.InternalServerError());
       }
-      client.SET(payload.userId, token, { EX: maxAge }, (err, reply) => {
+      client.SET(payload.userId, token, { EX: maxAge }, (err, result) => {
         if (err) {
           reject(createError.InternalServerError());
           return;
         }
-        console.log(reply);
       });
       resolve(token);
     });
@@ -52,11 +51,21 @@ function verifyAccessToken(token) {
 
 function verifyRefreshToken(token) {
   return new Promise((resolve, reject) => {
-    jwt.verify(token, secretRefreshKey, (err, decoded) => {
+    jwt.verify(token, secretRefreshKey, async (err, decoded) => {
       if (err) {
-        reject(createError(401, "Invalid refresh token"));
-      } else {
-        resolve(decoded);
+        console.log(err.message);
+        return reject(createError(401, "Invalid refresh token"));
+      }
+      if (decoded) {
+        const userId = decoded.userId;
+        const result = await client.GET(userId, (err, response) => {
+          if (err) {
+            return reject(createError.InternalServerError);
+          }
+        });
+        if (result === token) {
+          resolve(userId);
+        }
       }
     });
   });

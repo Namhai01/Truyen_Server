@@ -5,6 +5,7 @@ const {
 } = require("../../libs/jwt_handle");
 const bcrypt = require("bcrypt");
 const userModel = require("../models/User");
+const client = require("../../libs/redis");
 
 module.exports.logIn = async (req, res) => {
   try {
@@ -31,7 +32,7 @@ module.exports.logIn = async (req, res) => {
       return res
         .status(401)
         .json({ status: "error", message: "Sai mật khẩu!" });
-    let maxAgeRefreshToken = 15; //60 * 24 * 60 * 60
+    let maxAgeRefreshToken = 60 * 24 * 60 * 60;
     const accessToken = await createAccessToken({ userId: user.id });
     const refreshToken = await createRefreshToken(
       { userId: user.id },
@@ -103,18 +104,20 @@ module.exports.refreshAccessToken = async (req, res) => {
     const refreshToken = req.cookies.refreshToken;
     if (!refreshToken) return res.sendStatus(401);
     const decode = await verifyRefreshToken(refreshToken);
-    const userId = decode.userId;
+    const userId = decode;
+    let maxAgeRefreshToken = 60 * 24 * 60 * 60;
     const newAccessToken = await createAccessToken({ userId: userId });
+    const newRefreshToken = await createRefreshToken(
+      { userId: userId },
+      maxAgeRefreshToken
+    );
+    res.cookie("refreshToken", newRefreshToken, {
+      httpOnly: true,
+      maxAge: maxAgeRefreshToken * 1000, //60days
+    });
     res.status(200).json({ accessToken: newAccessToken });
   } catch (error) {
     console.log(error.message);
-    return res.status(500).json({ error: "Đã xảy ra lỗi!" });
-  }
-};
-
-module.exports.refreshRefreshToken = async (req, res) => {
-  try {
-  } catch (error) {
     return res.status(500).json({ error: "Đã xảy ra lỗi!" });
   }
 };

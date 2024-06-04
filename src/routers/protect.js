@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const userController = require("../apps/controllers/User");
+// const authController = require("../apps/controllers/Auth");
 const truyenController = require("../apps/controllers/Truyen");
 const chapterController = require("../apps/controllers/Chapter");
 const categoryController = require("../apps/controllers/Category");
@@ -8,6 +9,7 @@ const upload = require("../apps/middlewares/Upload");
 const checkImageMiddleware = require("../apps/middlewares/CheckType");
 //USER
 router.get("/user/info", userController.userInfo);
+// router.post("/refreshAccessToken", authController.refreshAccessToken);
 
 // TRUYEN
 router.post(
@@ -16,6 +18,8 @@ router.post(
   checkImageMiddleware,
   truyenController.truyenUpload
 );
+
+router.post("/truyen/follow", truyenController.follow);
 
 //CHAPTER
 router.post("/truyen/:id/add-chapter", chapterController.add);

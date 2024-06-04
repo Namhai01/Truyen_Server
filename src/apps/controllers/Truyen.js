@@ -100,6 +100,15 @@ module.exports.getTruyenId = async (req, res) => {
     return res.status(500).json({ error: "Đã xảy ra lỗi!" });
   }
 };
+module.exports.follow = async (req, res) => {
+  try {
+    const user = req.user;
+    console.log(user);
+  } catch (error) {
+    console.log(error.message);
+    return res.status(500).json({ error: "Đã xảy ra lỗi!" });
+  }
+};
 module.exports.filterCategories = async (req, res) => {
   try {
   } catch (error) {
