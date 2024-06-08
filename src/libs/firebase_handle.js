@@ -1,6 +1,6 @@
 const admin = require("firebase-admin");
 require("dotenv").config();
-const serviceAccount = require("../common/imgsaving-3f526-firebase-adminsdk-9slg5-6cca296499.json");
+const serviceAccount = require("../common/firebase");
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
