@@ -13,6 +13,17 @@ function createAccessToken(payload) {
         console.log(err.message);
         reject(createError.InternalServerError());
       }
+      client.SET(
+        `accessToken_${payload.userId}`,
+        token,
+        { EX: 10 * 60 },
+        (err, result) => {
+          if (err) {
+            reject(createError.InternalServerError());
+            return;
+          }
+        }
+      );
       resolve(token);
     });
   });
@@ -39,11 +50,26 @@ function createRefreshToken(payload, maxAge) {
 // Xác thực JWT
 function verifyAccessToken(token) {
   return new Promise((resolve, reject) => {
-    jwt.verify(token, secretAccessKey, (err, decoded) => {
+    jwt.verify(token, secretAccessKey, async (err, decoded) => {
       if (err) {
         reject(createError(401, "Invalid access token"));
-      } else {
-        resolve(decoded);
+      }
+      if (decoded) {
+        const userId = decoded.userId;
+        const result = await client.GET(
+          `accessToken_${userId}`,
+          (err, response) => {
+            if (err) {
+              console.log(err.message);
+              return reject(createError.InternalServerError);
+            }
+          }
+        );
+        if (result === token) {
+          return resolve(userId);
+        } else {
+          return reject(createError.Unauthorized);
+        }
       }
     });
   });
@@ -60,11 +86,14 @@ function verifyRefreshToken(token) {
         const userId = decoded.userId;
         const result = await client.GET(userId, (err, response) => {
           if (err) {
+            console.log(err.message);
             return reject(createError.InternalServerError);
           }
         });
         if (result === token) {
-          resolve(userId);
+          return resolve(userId);
+        } else {
+          return reject(createError.Unauthorized);
         }
       }
     });

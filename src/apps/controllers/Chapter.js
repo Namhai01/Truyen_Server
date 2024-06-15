@@ -20,9 +20,8 @@ module.exports.add = async (req, res) => {
     const lastChapter = await chapterModel
       .find({ _id: { $in: truyen.chapters } })
       .sort({ chapter_num: -1 });
-    const nextChapterNum = lastChapter ? lastChapter[0].chapter_num + 1 : 1;
     const newChapter = await chapterModel.create({
-      chapter_num: nextChapterNum,
+      chapter_num: body.chapter_num,
       body: body.body,
     });
     truyen.chapters = newChapter._id;

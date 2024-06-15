@@ -28,7 +28,7 @@ const userSchema = new mongoose.Schema(
         },
         chapter: {
           type: Number,
-          required: true,
+          default: 0,
         },
       },
     ],

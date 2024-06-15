@@ -9,6 +9,7 @@ const upload = require("../apps/middlewares/Upload");
 const checkImageMiddleware = require("../apps/middlewares/CheckType");
 //USER
 router.get("/user/info", userController.userInfo);
+router.post("/user/follow", userController.followTruyen);
 // router.post("/refreshAccessToken", authController.refreshAccessToken);
 
 // TRUYEN
