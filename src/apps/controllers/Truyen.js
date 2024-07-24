@@ -48,7 +48,11 @@ module.exports.getTruyen = async (req, res) => {
     const skip = page * limit - limit;
     const query = {};
     const sortBy =
-      req.query.filter == "view" ? { view: -1, rate: -1 } : { _id: -1 };
+      req.query.filter == "view"
+        ? { view: -1 }
+        : { _id: -1 } && req.query.filter == "rate"
+        ? { rate: -1 }
+        : { _id: -1 };
     const keywords = req.query.key;
     if (keywords && keywords.trim() !== "") {
       query.title = { $regex: new RegExp(keywords, "i") };
@@ -66,6 +70,8 @@ module.exports.getTruyen = async (req, res) => {
         truyen,
         filters: {
           limit,
+          key,
+          filter,
         },
         pages: {
           page: await pagination(truyenModel, query, page, limit),
@@ -95,15 +101,6 @@ module.exports.getTruyenId = async (req, res) => {
         truyen,
       },
     });
-  } catch (error) {
-    console.log(error.message);
-    return res.status(500).json({ error: "Đã xảy ra lỗi!" });
-  }
-};
-module.exports.follow = async (req, res) => {
-  try {
-    const user = req.user;
-    console.log(user);
   } catch (error) {
     console.log(error.message);
     return res.status(500).json({ error: "Đã xảy ra lỗi!" });

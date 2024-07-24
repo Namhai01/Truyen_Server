@@ -56,3 +56,40 @@ module.exports.followTruyen = async (req, res) => {
     return res.status(500).json({ error: "Đã xảy ra lỗi!" });
   }
 };
+
+module.exports.unfollowTruyen = async (req, res) => {
+  try {
+    const id = req.user;
+    const user = await userModel.findById(id);
+    if (!user) {
+      return res
+        .status(404)
+        .json({ status: "error", message: "User not found" });
+    }
+
+    const { idtruyen } = req.query;
+    if (!idtruyen) {
+      return res.status(400).json({ message: "idtruyen is required." });
+    }
+
+    const followerIndex = user.follower.findIndex((f) =>
+      f.truyen_info.equals(idtruyen)
+    );
+
+    if (followerIndex === -1) {
+      return res
+        .status(404)
+        .json({ message: "Truyện nay chưa được theo dõi!" });
+    }
+
+    user.follower.splice(followerIndex, 1);
+
+    await user.save();
+    res
+      .status(200)
+      .json({ status: "success", message: "Unfollowed successfully" });
+  } catch (error) {
+    console.log(error.message);
+    return res.status(500).json({ error: "Đã xảy ra lỗi!" });
+  }
+};

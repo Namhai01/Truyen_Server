@@ -10,6 +10,7 @@ const checkImageMiddleware = require("../apps/middlewares/CheckType");
 //USER
 router.get("/user/info", userController.userInfo);
 router.post("/user/follow", userController.followTruyen);
+router.post("/user/unfollow", userController.unfollowTruyen);
 // router.post("/refreshAccessToken", authController.refreshAccessToken);
 
 // TRUYEN
@@ -19,8 +20,6 @@ router.post(
   checkImageMiddleware,
   truyenController.truyenUpload
 );
-
-router.post("/truyen/follow", truyenController.follow);
 
 //CHAPTER
 router.post("/truyen/:id/add-chapter", chapterController.add);
